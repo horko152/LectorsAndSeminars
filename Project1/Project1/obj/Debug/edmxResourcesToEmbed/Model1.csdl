@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Project1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Lektors">
+    <Key>
+      <PropertyRef Name="LektorName" />
+    </Key>
+    <Property Name="LektorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Age" Type="Int32" />
+    <Property Name="Sex" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SeminarsAndLektors" Relationship="Self.FK_LektorsSeminarsAndLektors" FromRole="Lektors" ToRole="SeminarsAndLektors" />
+  </EntityType>
+  <EntityType Name="Seminars">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SeminarName" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SeminarsAndLektors" Relationship="Self.FK_SeminarsSeminarsAndLektors" FromRole="Seminars" ToRole="SeminarsAndLektors" />
+  </EntityType>
+  <EntityType Name="SeminarsAndLektors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LektorsName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SeminarsId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Lektors" Relationship="Self.FK_LektorsSeminarsAndLektors" FromRole="SeminarsAndLektors" ToRole="Lektors" />
+    <NavigationProperty Name="Seminars" Relationship="Self.FK_SeminarsSeminarsAndLektors" FromRole="SeminarsAndLektors" ToRole="Seminars" />
+  </EntityType>
+  <Association Name="FK_LektorsSeminarsAndLektors">
+    <End Role="Lektors" Type="Self.Lektors" Multiplicity="1" />
+    <End Role="SeminarsAndLektors" Type="Self.SeminarsAndLektors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lektors">
+        <PropertyRef Name="LektorName" />
+      </Principal>
+      <Dependent Role="SeminarsAndLektors">
+        <PropertyRef Name="LektorsName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SeminarsSeminarsAndLektors">
+    <End Role="Seminars" Type="Self.Seminars" Multiplicity="1" />
+    <End Role="SeminarsAndLektors" Type="Self.SeminarsAndLektors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seminars">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeminarsAndLektors">
+        <PropertyRef Name="SeminarsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Project1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Lektors" EntityType="Self.Lektors" />
+    <EntitySet Name="Seminars" EntityType="Self.Seminars" />
+    <EntitySet Name="SeminarsAndLektors" EntityType="Self.SeminarsAndLektors" />
+    <AssociationSet Name="FK_LektorsSeminarsAndLektors" Association="Self.FK_LektorsSeminarsAndLektors">
+      <End Role="Lektors" EntitySet="Lektors" />
+      <End Role="SeminarsAndLektors" EntitySet="SeminarsAndLektors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SeminarsSeminarsAndLektors" Association="Self.FK_SeminarsSeminarsAndLektors">
+      <End Role="Seminars" EntitySet="Seminars" />
+      <End Role="SeminarsAndLektors" EntitySet="SeminarsAndLektors" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище Project1Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Lektors">
+    <Key>
+      <PropertyRef Name="LektorName" />
+    </Key>
+    <Property Name="LektorName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Age" Type="int" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="15" />
+    <Property Name="Address" Type="nvarchar" MaxLength="150" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Seminars">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SeminarName" Type="nvarchar" MaxLength="75" />
+  </EntityType>
+  <EntityType Name="SeminarsAndLektors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LektorsName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SeminarsId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_LektorsSeminarsAndLektors">
+    <End Role="Lektors" Type="Self.Lektors" Multiplicity="1" />
+    <End Role="SeminarsAndLektors" Type="Self.SeminarsAndLektors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lektors">
+        <PropertyRef Name="LektorName" />
+      </Principal>
+      <Dependent Role="SeminarsAndLektors">
+        <PropertyRef Name="LektorsName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SeminarsSeminarsAndLektors">
+    <End Role="Seminars" Type="Self.Seminars" Multiplicity="1" />
+    <End Role="SeminarsAndLektors" Type="Self.SeminarsAndLektors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seminars">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeminarsAndLektors">
+        <PropertyRef Name="SeminarsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище Project1ModelContainer">
+    <EntitySet Name="Lektors" EntityType="Self.Lektors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Seminars" EntityType="Self.Seminars" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SeminarsAndLektors" EntityType="Self.SeminarsAndLektors" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_LektorsSeminarsAndLektors" Association="Self.FK_LektorsSeminarsAndLektors">
+      <End Role="Lektors" EntitySet="Lektors" />
+      <End Role="SeminarsAndLektors" EntitySet="SeminarsAndLektors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SeminarsSeminarsAndLektors" Association="Self.FK_SeminarsSeminarsAndLektors">
+      <End Role="Seminars" EntitySet="Seminars" />
+      <End Role="SeminarsAndLektors" EntitySet="SeminarsAndLektors" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
