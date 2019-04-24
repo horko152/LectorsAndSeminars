@@ -1,4 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-* linguist-vendored
-*.CSharp linguist-vendored=false
+*.PowerShell linguist-vendored=true
